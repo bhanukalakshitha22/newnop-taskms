@@ -4,6 +4,11 @@ React + TypeScript single-page app for the TaskFlow task management system.
 
 ---
 
+## ER Diagram
+
+<img width="711" height="411" alt="image" src="https://github.com/user-attachments/assets/83c5be6e-33f6-4011-a32a-0b24ec5c1242" />
+
+
 ## Prerequisites
 
 | Tool | Version |
