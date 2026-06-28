@@ -8,11 +8,18 @@ function formatDate(iso?: string | null) {
 }
 
 export function TaskCard({ task }: { task: Task }) {
+  const overdue = task.dueDate && task.status !== 'Done' && new Date(task.dueDate) < new Date();
+
   return (
-    <Link to={`/tasks/${task._id}`} className="task-card" style={{ color: 'inherit', textDecoration: 'none' }}>
+    <Link
+      to={`/tasks/${task._id}`}
+      className={`task-card${overdue ? ' overdue' : ''}`}
+      style={{ color: 'inherit', textDecoration: 'none' }}
+    >
       <div className="chips-row">
         <span className={`chip chip-priority-${task.priority}`}>{task.priority}</span>
         <span className={`chip chip-status-${task.status.replace(' ', '.')}`}>{task.status}</span>
+        {overdue && <span className="overdue-badge">⚠ Overdue</span>}
       </div>
       <h3>{task.title}</h3>
       <p className="desc">{task.description?.slice(0, 120) || 'No description.'}</p>

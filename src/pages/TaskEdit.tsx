@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { tasksApi } from '../api/tasks';
 import { TaskForm } from '../components/TaskForm';
+import { useToast } from '../components/Toast';
 import type { Task, TaskFormValues } from '../types';
 
 export function TaskEdit() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const toast = useToast();
   const [task, setTask] = useState<Task | null>(null);
   const [error, setError] = useState('');
 
@@ -38,6 +40,7 @@ export function TaskEdit() {
       dueDate: v.dueDate || undefined,
       assignedTo: v.assignedTo || undefined,
     });
+    toast('Task saved successfully');
     navigate(`/tasks/${task!._id}`);
   }
 

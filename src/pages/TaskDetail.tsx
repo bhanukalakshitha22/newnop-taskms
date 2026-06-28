@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { tasksApi } from '../api/tasks';
 import type { Task } from '../types';
 import { useAuth } from '../auth/AuthContext';
+import { useToast } from '../components/Toast';
 
 function formatDate(iso?: string | null) {
   if (!iso) return '—';
@@ -13,6 +14,7 @@ export function TaskDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const toast = useToast();
   const [task, setTask] = useState<Task | null>(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
@@ -32,6 +34,7 @@ export function TaskDetail() {
     if (!confirm(`Delete task "${task.title}"?`)) return;
     try {
       await tasksApi.remove(task._id);
+      toast('Task deleted');
       navigate('/tasks');
     } catch (e: any) {
       setError(e?.response?.data?.message ?? 'Delete failed');

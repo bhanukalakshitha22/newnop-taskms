@@ -33,13 +33,16 @@ export function TaskList() {
   return (
     <>
       <div className="page-header">
-        <div>
-          <h1>Tasks</h1>
-          <p style={{ margin: '6px 0 0', color: 'var(--text-muted)', fontSize: 13 }}>
-            {tasks.length} total · {counts.Open} open · {counts['In Progress']} in progress · {counts.Testing} testing · {counts.Done} done
-          </p>
-        </div>
+        <h1>Tasks</h1>
         <button className="btn-primary" onClick={() => navigate('/tasks/new')}>+ New task</button>
+      </div>
+
+      <div className="stats-row">
+        <div className="stat-card"><span className="stat-num">{tasks.length}</span><span className="stat-label">Total</span></div>
+        <div className="stat-card stat-open"><span className="stat-num">{counts.Open}</span><span className="stat-label">Open</span></div>
+        <div className="stat-card stat-inprogress"><span className="stat-num">{counts['In Progress']}</span><span className="stat-label">In Progress</span></div>
+        <div className="stat-card stat-testing"><span className="stat-num">{counts.Testing}</span><span className="stat-label">Testing</span></div>
+        <div className="stat-card stat-done"><span className="stat-num">{counts.Done}</span><span className="stat-label">Done</span></div>
       </div>
 
       <FilterBar value={filters} onChange={setFilters} />

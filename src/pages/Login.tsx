@@ -1,10 +1,12 @@
 import { FormEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
+import { useToast } from '../components/Toast';
 
 export function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const toast = useToast();
   const [email, setEmail] = useState('admin@example.com');
   const [password, setPassword] = useState('Admin@123');
   const [error, setError] = useState('');
@@ -16,6 +18,7 @@ export function Login() {
     setSubmitting(true);
     try {
       await login(email, password);
+      toast('Welcome back!');
       navigate('/tasks');
     } catch (err: any) {
       setError(err?.response?.data?.message ?? 'Login failed');

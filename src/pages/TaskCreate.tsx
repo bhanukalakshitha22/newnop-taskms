@@ -1,10 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { TaskForm } from '../components/TaskForm';
 import { tasksApi } from '../api/tasks';
+import { useToast } from '../components/Toast';
 import type { TaskFormValues } from '../types';
 
 export function TaskCreate() {
   const navigate = useNavigate();
+  const toast = useToast();
 
   async function handleSubmit(v: TaskFormValues) {
     await tasksApi.create({
@@ -15,6 +17,7 @@ export function TaskCreate() {
       dueDate: v.dueDate || undefined,
       assignedTo: v.assignedTo || undefined,
     });
+    toast('Task created successfully');
     navigate('/tasks');
   }
 

@@ -1,9 +1,23 @@
 import { TASK_PRIORITIES, TASK_STATUSES, TaskPriority, TaskStatus } from '../types';
-import type { TaskListFilters } from '../api/tasks';
+import type { SortDir, SortField, TaskListFilters } from '../api/tasks';
 
 interface Props {
   value: TaskListFilters;
   onChange: (next: TaskListFilters) => void;
+}
+
+const SORT_OPTIONS: { label: string; sortBy: SortField; sortDir: SortDir }[] = [
+  { label: 'Newest first',      sortBy: 'createdAt', sortDir: 'desc' },
+  { label: 'Oldest first',      sortBy: 'createdAt', sortDir: 'asc'  },
+  { label: 'Due date ↑',        sortBy: 'dueDate',   sortDir: 'asc'  },
+  { label: 'Due date ↓',        sortBy: 'dueDate',   sortDir: 'desc' },
+  { label: 'Priority: High→Low',sortBy: 'priority',  sortDir: 'desc' },
+  { label: 'Priority: Low→High',sortBy: 'priority',  sortDir: 'asc'  },
+  { label: 'Title A→Z',         sortBy: 'title',     sortDir: 'asc'  },
+];
+
+function sortKey(f: TaskListFilters) {
+  return `${f.sortBy ?? 'createdAt'}_${f.sortDir ?? 'desc'}`;
 }
 
 export function FilterBar({ value, onChange }: Props) {
@@ -36,6 +50,20 @@ export function FilterBar({ value, onChange }: Props) {
         >
           <option value="">All</option>
           {TASK_PRIORITIES.map((p) => <option key={p} value={p}>{p}</option>)}
+        </select>
+      </div>
+      <div className="field">
+        <label>Sort by</label>
+        <select
+          value={sortKey(value)}
+          onChange={(e) => {
+            const opt = SORT_OPTIONS.find(o => `${o.sortBy}_${o.sortDir}` === e.target.value);
+            if (opt) onChange({ ...value, sortBy: opt.sortBy, sortDir: opt.sortDir });
+          }}
+        >
+          {SORT_OPTIONS.map((o) => (
+            <option key={`${o.sortBy}_${o.sortDir}`} value={`${o.sortBy}_${o.sortDir}`}>{o.label}</option>
+          ))}
         </select>
       </div>
       <button

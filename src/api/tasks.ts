@@ -1,11 +1,16 @@
 import { api } from './client';
 import type { Task, TaskPriority, TaskStatus } from '../types';
 
+export type SortField = 'createdAt' | 'dueDate' | 'priority' | 'title';
+export type SortDir = 'asc' | 'desc';
+
 export interface TaskListFilters {
   status?: TaskStatus;
   priority?: TaskPriority;
   q?: string;
   assignedTo?: string;
+  sortBy?: SortField;
+  sortDir?: SortDir;
 }
 
 export interface TaskWriteInput {

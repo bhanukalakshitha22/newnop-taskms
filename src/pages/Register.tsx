@@ -1,10 +1,12 @@
 import { FormEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
+import { useToast } from '../components/Toast';
 
 export function Register() {
   const { register } = useAuth();
   const navigate = useNavigate();
+  const toast = useToast();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,6 +19,7 @@ export function Register() {
     setSubmitting(true);
     try {
       await register(name, email, password);
+      toast('Account created! Welcome aboard.');
       navigate('/tasks');
     } catch (err: any) {
       setError(err?.response?.data?.message ?? 'Registration failed');
